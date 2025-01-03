@@ -71,7 +71,7 @@ object ZIORecap extends ZIOAppDefault {
       } yield ()
   }
   private object UserSubscription {
-    val live: ZLayer[EmailService with UserDatabase, Nothing, UserSubscription] =
+    val live: ZLayer[EmailService & UserDatabase, Nothing, UserSubscription] =
       ZLayer.fromFunction(new UserSubscription(_, _))
   }
   class EmailService {
@@ -109,7 +109,7 @@ object ZIORecap extends ZIOAppDefault {
 //  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = smallProgram
 //  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = interruptedFiber
 //  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ignoredInterruption
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = program.provide(
+  override def run: ZIO[Any & ZIOAppArgs & Scope, Any, Any] = program.provide(
     ConnectionPool.live(10),
     UserDatabase.live,
     EmailService.live,

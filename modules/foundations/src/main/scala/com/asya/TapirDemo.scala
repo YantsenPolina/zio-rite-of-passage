@@ -7,7 +7,6 @@ import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.ziohttp.{ZioHttpInterpreter, ZioHttpServerOptions}
 import zio.*
 import zio.http.Server
-import zio.json.{DeriveJsonCodec, JsonCodec}
 
 import scala.collection.mutable
 
@@ -73,16 +72,6 @@ object TapirDemo extends ZIOAppDefault {
 //  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] =
 //    simpleServerProgram.provide(Server.default)
 
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] =
+  override def run: ZIO[Any & ZIOAppArgs & Scope, Any, Any] =
     serverProgram.provide(Server.default)
-}
-
-case class Job(id: Long, title: String, url: String, company: String)
-object Job {
-  given codec: JsonCodec[Job] = DeriveJsonCodec.gen[Job] // Macro-based JSON codec (generated).
-}
-
-case class CreateJobRequest(title: String, url: String, company: String)
-object CreateJobRequest {
-  given codec: JsonCodec[CreateJobRequest] = DeriveJsonCodec.gen[CreateJobRequest]
 }
