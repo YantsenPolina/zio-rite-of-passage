@@ -1,10 +1,10 @@
 package com.asya.reviewboard.http.endpoints
 
+import com.asya.reviewboard.domain.data.*
+import com.asya.reviewboard.http.requests.*
 import sttp.tapir.*
 import sttp.tapir.generic.auto.*
 import sttp.tapir.json.zio.*
-import com.asya.reviewboard.http.requests.*
-import com.asya.reviewboard.domain.data.*
 
 trait CompanyEndpoints {
   val createEndpoint = endpoint
@@ -30,5 +30,5 @@ trait CompanyEndpoints {
     .description("Get Company by id.")
     .in("companies" / path[String]("id"))
     .get
-    .out(jsonBody[Option[Company]])  
+    .out(jsonBody[Option[Company]])
 }

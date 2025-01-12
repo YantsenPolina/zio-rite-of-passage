@@ -1,9 +1,10 @@
 package com.asya.reviewboard
 
+import com.asya.reviewboard.http.HttpApi
+import com.asya.reviewboard.services.CompanyService
 import sttp.tapir.server.ziohttp.*
 import zio.*
 import zio.http.Server
-import com.asya.reviewboard.http.HttpApi
 
 object Application extends ZIOAppDefault {
   private val serverProgram = for {
@@ -18,6 +19,7 @@ object Application extends ZIOAppDefault {
 
   override def run: ZIO[Any & (ZIOAppArgs & Scope), Any, Any] =
     serverProgram.provide(
-      Server.default
+      Server.default,
+      CompanyService.dummyLayer
     )
 }

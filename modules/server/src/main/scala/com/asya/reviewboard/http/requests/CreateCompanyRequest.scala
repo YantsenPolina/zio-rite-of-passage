@@ -1,19 +1,18 @@
 package com.asya.reviewboard.http.requests
 
-import zio.json.JsonCodec
-import zio.json.DeriveJsonCodec
 import com.asya.reviewboard.domain.data.Company
+import zio.json.{DeriveJsonCodec, JsonCodec}
 
 final case class CreateCompanyRequest(
-  name: String,
-  url: String,
-  location: Option[String] = None,
-  country: Option[String] = None,
-  industry: Option[String] = None,
-  image: Option[String] = None,
-  tags: Option[List[String]] = None
+    name: String,
+    url: String,
+    location: Option[String] = None,
+    country: Option[String] = None,
+    industry: Option[String] = None,
+    image: Option[String] = None,
+    tags: Option[List[String]] = None
 ) {
-  def toCompany(id: Long) =
+  def toCompany(id: Long): Company =
     Company(
       id = id,
       slug = Company.makeSlug(name),

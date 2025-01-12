@@ -1,35 +1,37 @@
 package com.asya.reviewboard.http.controllers
 
-import collection.mutable
 import com.asya.reviewboard.http.endpoints.CompanyEndpoints
 import com.asya.reviewboard.domain.data.Company
+import com.asya.reviewboard.services.CompanyService
 import sttp.tapir.server.ServerEndpoint
 import zio.*
 
-
-class CompanyController private extends BaseController with CompanyEndpoints {
-  val db = mutable.Map[Long, Company]()
-
-  val create: ServerEndpoint[Any, Task] = createEndpoint.serverLogicSuccess { request =>
-    ZIO.succeed {
-        val newId = db.keys.maxOption.getOrElse(0L) + 1
-        val newCompany = request.toCompany(newId)
-        db += (newId -> newCompany)
-        newCompany 
+class CompanyController private (service: CompanyService)
+    extends BaseController
+    with CompanyEndpoints {
+  val create: ServerEndpoint[Any, Task] =
+    createEndpoint.serverLogicSuccess { request =>
+      service.create(request)
     }
-  }
 
-  val getAll: ServerEndpoint[Any, Task] = getAllEndpoint.serverLogicSuccess(_ => ZIO.succeed(db.values.toList))
+  val getAll: ServerEndpoint[Any, Task] =
+    getAllEndpoint.serverLogicSuccess(_ => service.getAll)
 
-  val getById: ServerEndpoint[Any, Task] = getByIdEndpoint.serverLogicSuccess { id =>
-    ZIO
-      .attempt(id.toLong)
-      .map(db.get)
-  }
+  val getById: ServerEndpoint[Any, Task] =
+    getByIdEndpoint.serverLogicSuccess { id =>
+      ZIO
+        .attempt(id.toLong)
+        .flatMap(service.getById)
+        .catchSome { case _: NumberFormatException =>
+          service.getBySlug(id)
+        }
+    }
 
   override val routes: List[ServerEndpoint[Any, Task]] = List(create, getAll, getById)
 }
 
 object CompanyController {
-  val makeZIO = ZIO.succeed(new CompanyController)
+  val makeZIO: URIO[CompanyService, CompanyController] = for {
+    service <- ZIO.service[CompanyService]
+  } yield new CompanyController(service)
 }

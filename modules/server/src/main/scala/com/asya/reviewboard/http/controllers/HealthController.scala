@@ -8,9 +8,9 @@ class HealthController private extends BaseController with HealthEndpoint {
   val health: ServerEndpoint[Any, Task] = healthEndpoint
     .serverLogicSuccess[Task](_ => ZIO.succeed("All good!"))
 
-  override val routes: List[ServerEndpoint[Any, Task]] = List(health)  
+  override val routes: List[ServerEndpoint[Any, Task]] = List(health)
 }
 
 object HealthController {
-    val makeZIO = ZIO.succeed(new HealthController)
+  val makeZIO: UIO[HealthController] = ZIO.succeed(new HealthController)
 }
