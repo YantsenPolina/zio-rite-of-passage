@@ -1,7 +1,8 @@
 package com.asya.reviewboard
 
 import com.asya.reviewboard.http.HttpApi
-import com.asya.reviewboard.services.CompanyService
+import com.asya.reviewboard.repositories.*
+import com.asya.reviewboard.services.*
 import sttp.tapir.server.ziohttp.*
 import zio.*
 import zio.http.Server
@@ -20,6 +21,12 @@ object Application extends ZIOAppDefault {
   override def run: ZIO[Any & (ZIOAppArgs & Scope), Any, Any] =
     serverProgram.provide(
       Server.default,
-      CompanyService.dummyLayer
+      // Services.
+//      CompanyService.dummyLayer
+      CompanyServiceLive.layer,
+      // Repositories.
+      CompanyRepositoryLive.layer,
+      // Other requirements.
+      Repository.dataLayer
     )
 }

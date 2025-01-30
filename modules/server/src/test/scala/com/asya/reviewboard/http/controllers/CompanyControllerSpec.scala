@@ -50,7 +50,7 @@ object CompanyControllerSpec extends ZIOSpecDefault {
 
   override def spec: Spec[TestEnvironment & Scope, Any] =
     suite("CompanyControllerSpec")(
-      test("create company") {
+      test("Create a company.") {
         val program = for {
           backendStub <- backendStubZIO(_.create)
           response <- basicRequest
@@ -65,7 +65,7 @@ object CompanyControllerSpec extends ZIOSpecDefault {
             .contains(rockTheJvmCompany)
         }
       },
-      test("get all companies") {
+      test("Get all companies.") {
         val program = for {
           backendStub <- backendStubZIO(_.getAll)
           response <- basicRequest
@@ -79,7 +79,7 @@ object CompanyControllerSpec extends ZIOSpecDefault {
             .contains(List(rockTheJvmCompany))
         }
       },
-      test("get company by id") {
+      test("Get the company by id.") {
         val program = for {
           backendStub <- backendStubZIO(_.getById)
           response <- basicRequest
