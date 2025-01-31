@@ -1,7 +1,7 @@
 package com.asya.reviewboard.http.controllers
 
-import com.asya.reviewboard.http.endpoints.CompanyEndpoints
 import com.asya.reviewboard.domain.data.Company
+import com.asya.reviewboard.http.endpoints.CompanyEndpoints
 import com.asya.reviewboard.services.CompanyService
 import sttp.tapir.server.ServerEndpoint
 import zio.*

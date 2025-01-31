@@ -4,8 +4,8 @@ import com.asya.reviewboard.domain.data.Company
 import com.asya.reviewboard.http.requests.CreateCompanyRequest
 import com.asya.reviewboard.repositories.CompanyRepository
 import com.asya.reviewboard.syntax.assert
-import zio.{Scope, Task, ZIO, ZLayer}
 import zio.test.{Spec, TestEnvironment, ZIOSpecDefault}
+import zio.{Scope, Task, ZIO, ZLayer}
 
 object CompanyServiceSpec extends ZIOSpecDefault {
   private val service = ZIO.serviceWithZIO[CompanyService]

@@ -24,8 +24,10 @@ object Application extends ZIOAppDefault {
       // Services.
 //      CompanyService.dummyLayer
       CompanyServiceLive.layer,
+      ReviewServiceLive.layer,
       // Repositories.
       CompanyRepositoryLive.layer,
+      ReviewRepositoryLive.layer,
       // Other requirements.
       Repository.dataLayer
     )

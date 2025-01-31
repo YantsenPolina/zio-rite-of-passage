@@ -2,14 +2,16 @@ package com.asya.reviewboard.repositories
 
 import com.asya.reviewboard.domain.data.Company
 import com.asya.reviewboard.syntax.assert
-import zio.{Scope, ZIO, ZLayer}
 import zio.test.{Spec, TestEnvironment, ZIOSpecDefault}
+import zio.{Scope, ZIO, ZLayer}
 
 import java.sql.SQLException
 import javax.sql.DataSource
 import scala.util.Random
 
 object CompanyRepositorySpec extends ZIOSpecDefault with RepositorySpec {
+  override val initScript: String = "sql/companies.sql"
+
   private val rockTheJvmCompany = Company(1L, "rock-the-jvm", "Rock the JVM", "rockthejvm.com")
 
   private def generateCompany(): Company =

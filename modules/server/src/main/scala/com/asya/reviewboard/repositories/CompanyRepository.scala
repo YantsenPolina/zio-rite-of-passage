@@ -14,7 +14,7 @@ trait CompanyRepository {
   def get: Task[List[Company]]
 }
 
-class CompanyRepositoryLive(quill: Quill.Postgres[SnakeCase]) extends CompanyRepository {
+class CompanyRepositoryLive private (quill: Quill.Postgres[SnakeCase]) extends CompanyRepository {
   import quill.*
 
   inline given schema: SchemaMeta[Company]  = schemaMeta[Company]("companies")
@@ -29,7 +29,9 @@ class CompanyRepositoryLive(quill: Quill.Postgres[SnakeCase]) extends CompanyRep
     }
 
   override def update(id: Long, op: Company => Company): Task[Company] = for {
-    current <- getById(id).someOrFail(new RuntimeException(s"Could not update: missing id $id."))
+    current <- getById(id).someOrFail(
+      new RuntimeException(s"Could not update company: missing id $id.")
+    )
     updated <- run {
       query[Company]
         .filter(_.id == lift(id))

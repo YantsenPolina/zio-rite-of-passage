@@ -1,7 +1,7 @@
 package com.asya.reviewboard.http
 
 import com.asya.reviewboard.http.controllers.*
-import com.asya.reviewboard.services.CompanyService
+import com.asya.reviewboard.services.{CompanyService, ReviewService}
 import sttp.tapir.server.ServerEndpoint
 import zio.{Task, URIO}
 
@@ -12,8 +12,9 @@ object HttpApi {
   private def makeControllers = for {
     healthController  <- HealthController.makeZIO
     companyController <- CompanyController.makeZIO
-  } yield List(healthController, companyController)
+    reviewController  <- ReviewController.makeZIO
+  } yield List(healthController, companyController, reviewController)
 
-  val endpointsZIO: URIO[CompanyService, List[ServerEndpoint[Any, Task]]] =
+  val endpointsZIO: URIO[CompanyService & ReviewService, List[ServerEndpoint[Any, Task]]] =
     makeControllers.map(gatherRoutes)
 }
