@@ -17,24 +17,24 @@ import zio.test.*
 object CompanyControllerSpec extends ZIOSpecDefault {
   private given zioMonadError: MonadError[Task] = new RIOMonadError[Any]
 
-  private val rockTheJvmCompany = Company(1, "rock-the-jvm", "Rock the JVM", "rockthejvm.com")
+  private val asyaTheCatCompany = Company(1, "asya-the-cat", "Asya the Cat", "asyathecat.com")
 
   private val serviceStub = new CompanyService {
     override def create(request: CreateCompanyRequest): Task[Company] =
-      ZIO.succeed(rockTheJvmCompany)
+      ZIO.succeed(asyaTheCatCompany)
 
     override def getAll: Task[List[Company]] =
-      ZIO.succeed(List(rockTheJvmCompany))
+      ZIO.succeed(List(asyaTheCatCompany))
 
     override def getById(id: Long): Task[Option[Company]] =
       ZIO.succeed {
-        if (id == 1) Some(rockTheJvmCompany)
+        if (id == 1) Some(asyaTheCatCompany)
         else None
       }
 
     override def getBySlug(slug: String): Task[Option[Company]] =
       ZIO.succeed {
-        if (slug == rockTheJvmCompany.slug) Some(rockTheJvmCompany)
+        if (slug == asyaTheCatCompany.slug) Some(asyaTheCatCompany)
         else None
       }
   }
@@ -55,14 +55,14 @@ object CompanyControllerSpec extends ZIOSpecDefault {
           backendStub <- backendStubZIO(_.create)
           response <- basicRequest
             .post(uri"/companies")
-            .body(CreateCompanyRequest("Rock the JVM", "rockthejvm.com").toJson)
+            .body(CreateCompanyRequest("Asya the Cat", "asyathecat.com").toJson)
             .send(backendStub)
         } yield response.body
 
         program.assert { responseBody =>
           responseBody.toOption
             .flatMap(_.fromJson[Company].toOption)
-            .contains(rockTheJvmCompany)
+            .contains(asyaTheCatCompany)
         }
       },
       test("Get all companies.") {
@@ -76,7 +76,7 @@ object CompanyControllerSpec extends ZIOSpecDefault {
         program.assert { responseBody =>
           responseBody.toOption
             .flatMap(_.fromJson[List[Company]].toOption)
-            .contains(List(rockTheJvmCompany))
+            .contains(List(asyaTheCatCompany))
         }
       },
       test("Get the company by id.") {
@@ -88,7 +88,7 @@ object CompanyControllerSpec extends ZIOSpecDefault {
         } yield response.body
 
         program.assert { responseBody =>
-          responseBody.toOption.flatMap(_.fromJson[Company].toOption).contains(rockTheJvmCompany)
+          responseBody.toOption.flatMap(_.fromJson[Company].toOption).contains(asyaTheCatCompany)
         }
       }
     )

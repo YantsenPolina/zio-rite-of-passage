@@ -105,7 +105,7 @@ object ZIORecap extends ZIOAppDefault {
     _ <- subscribe(User("Floki", "floki@gmail.com"))
   } yield ()
 
-//  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = Console.printLine("Rock the JVM!")
+//  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = Console.printLine("Welcome!")
 //  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = smallProgram
 //  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = interruptedFiber
 //  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ignoredInterruption

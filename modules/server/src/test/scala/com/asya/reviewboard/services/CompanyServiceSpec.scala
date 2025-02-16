@@ -48,47 +48,47 @@ object CompanyServiceSpec extends ZIOSpecDefault {
   override def spec: Spec[TestEnvironment & Scope, Any] =
     suite("CompanyServiceSpec")(
       test("Create a company.") {
-        val companyZIO = service(_.create(CreateCompanyRequest("Rock the JVM", "rockthejvm.com")))
+        val companyZIO = service(_.create(CreateCompanyRequest("Asya the Cat", "asyathecat.com")))
 
         companyZIO.assert { company =>
-          company.name == "Rock the JVM" &&
-          company.url == "rockthejvm.com" &&
-          company.slug == "rock-the-jvm"
+          company.name == "Asya the Cat" &&
+          company.url == "asyathecat.com" &&
+          company.slug == "asya-the-cat"
         }
       },
       test("Get the company by id.") {
         val program = for {
-          company    <- service(_.create(CreateCompanyRequest("Rock the JVM", "rockthejvm.com")))
+          company    <- service(_.create(CreateCompanyRequest("Asya the Cat", "asyathecat.com")))
           companyOpt <- service(_.getById(company.id))
         } yield (company, companyOpt)
 
         program.assert {
           case (company, Some(companyResult)) =>
-            company.name == "Rock the JVM" &&
-            company.url == "rockthejvm.com" &&
-            company.slug == "rock-the-jvm" &&
+            company.name == "Asya the Cat" &&
+            company.url == "asyathecat.com" &&
+            company.slug == "asya-the-cat" &&
             company == companyResult
           case _ => false
         }
       },
       test("Get the company by slug.") {
         val program = for {
-          company    <- service(_.create(CreateCompanyRequest("Rock the JVM", "rockthejvm.com")))
+          company    <- service(_.create(CreateCompanyRequest("Asya the Cat", "asyathecat.com")))
           companyOpt <- service(_.getBySlug(company.slug))
         } yield (company, companyOpt)
 
         program.assert {
           case (company, Some(companyResult)) =>
-            company.name == "Rock the JVM" &&
-            company.url == "rockthejvm.com" &&
-            company.slug == "rock-the-jvm" &&
+            company.name == "Asya the Cat" &&
+            company.url == "asyathecat.com" &&
+            company.slug == "asya-the-cat" &&
             company == companyResult
           case _ => false
         }
       },
       test("Get all companies.") {
         val program = for {
-          company1  <- service(_.create(CreateCompanyRequest("Rock the JVM", "rockthejvm.com")))
+          company1  <- service(_.create(CreateCompanyRequest("Asya the Cat", "asyathecat.com")))
           company2  <- service(_.create(CreateCompanyRequest("Google", "google.com")))
           companies <- service(_.getAll)
         } yield (company1, company2, companies)

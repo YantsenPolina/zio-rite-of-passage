@@ -15,7 +15,7 @@ object Application extends ZIOAppDefault {
         ZioHttpServerOptions.default
       ).toHttp(endpoints)
     )
-    _ <- Console.printLine("Rock the JVM!")
+    _ <- Console.printLine("Welcome!")
   } yield ()
 
   override def run: ZIO[Any & (ZIOAppArgs & Scope), Any, Any] =

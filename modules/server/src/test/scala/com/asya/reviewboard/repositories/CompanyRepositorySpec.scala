@@ -12,7 +12,7 @@ import scala.util.Random
 object CompanyRepositorySpec extends ZIOSpecDefault with RepositorySpec {
   override val initScript: String = "sql/companies.sql"
 
-  private val rockTheJvmCompany = Company(1L, "rock-the-jvm", "Rock the JVM", "rockthejvm.com")
+  private val asyaTheCatCompany = Company(1L, "asya-the-cat", "Asya the Cat", "asyathecat.com")
 
   private def generateCompany(): Company =
     Company(
@@ -29,19 +29,19 @@ object CompanyRepositorySpec extends ZIOSpecDefault with RepositorySpec {
       test("Create a company.") {
         val program = for {
           repo    <- ZIO.service[CompanyRepository]
-          company <- repo.create(rockTheJvmCompany)
+          company <- repo.create(asyaTheCatCompany)
         } yield company
 
         program.assert {
-          case Company(_, "rock-the-jvm", "Rock the JVM", "rockthejvm.com", _, _, _, _, _) => true
+          case Company(_, "asya-the-cat", "Asya the Cat", "asyathecat.com", _, _, _, _, _) => true
           case _                                                                           => false
         }
       },
       test("Creating a duplicate company should return error.") {
         val program = for {
           repo  <- ZIO.service[CompanyRepository]
-          _     <- repo.create(rockTheJvmCompany)
-          error <- repo.create(rockTheJvmCompany).flip
+          _     <- repo.create(asyaTheCatCompany)
+          error <- repo.create(asyaTheCatCompany).flip
         } yield error
 
         program.assert(_.isInstanceOf[SQLException])
@@ -49,7 +49,7 @@ object CompanyRepositorySpec extends ZIOSpecDefault with RepositorySpec {
       test("Get the company by id and slug.") {
         val program = for {
           repo          <- ZIO.service[CompanyRepository]
-          company       <- repo.create(rockTheJvmCompany)
+          company       <- repo.create(asyaTheCatCompany)
           fetchedById   <- repo.getById(company.id)
           fetchedBySlug <- repo.getBySlug(company.slug)
         } yield (company, fetchedById, fetchedBySlug)
@@ -61,8 +61,8 @@ object CompanyRepositorySpec extends ZIOSpecDefault with RepositorySpec {
       test("Update the company.") {
         val program = for {
           repo        <- ZIO.service[CompanyRepository]
-          company     <- repo.create(rockTheJvmCompany)
-          updated     <- repo.update(company.id, _.copy(url = "blog.rockthejvm.com"))
+          company     <- repo.create(asyaTheCatCompany)
+          updated     <- repo.update(company.id, _.copy(url = "blog.asyathecat.com"))
           fetchedById <- repo.getById(company.id)
         } yield (updated, fetchedById)
 
@@ -73,7 +73,7 @@ object CompanyRepositorySpec extends ZIOSpecDefault with RepositorySpec {
       test("Delete the company.") {
         val program = for {
           repo        <- ZIO.service[CompanyRepository]
-          company     <- repo.create(rockTheJvmCompany)
+          company     <- repo.create(asyaTheCatCompany)
           _           <- repo.delete(company.id)
           fetchedById <- repo.getById(company.id)
         } yield fetchedById
