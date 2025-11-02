@@ -7,7 +7,7 @@ trait HealthEndpoint {
     .tag("health")
     .name("health")
     .description("Health check.")
-    .get
     .in("health")
+    .get
     .out(plainBody[String])
 }
