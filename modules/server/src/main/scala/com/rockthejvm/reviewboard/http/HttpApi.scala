@@ -1,8 +1,9 @@
 package com.rockthejvm.reviewboard.http
 
 import com.rockthejvm.reviewboard.http.controllers.*
+import com.rockthejvm.reviewboard.services.CompanyService
 import sttp.tapir.server.ServerEndpoint
-import zio.{Task, UIO}
+import zio.{Task, URIO}
 
 object HttpApi {
   private def gatherRoutes(controllers: List[BaseController]) =
@@ -13,5 +14,6 @@ object HttpApi {
     companyController <- CompanyController.makeZIO
   } yield List(healthController, companyController)
 
-  val endpointsZIO: UIO[List[ServerEndpoint[Any, Task]]] = makeControllers.map(gatherRoutes)
+  val endpointsZIO: URIO[CompanyService, List[ServerEndpoint[Any, Task]]] =
+    makeControllers.map(gatherRoutes)
 }
