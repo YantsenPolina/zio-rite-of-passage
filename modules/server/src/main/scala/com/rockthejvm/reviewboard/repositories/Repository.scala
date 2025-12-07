@@ -4,8 +4,10 @@ import io.getquill.SnakeCase
 import io.getquill.jdbczio.Quill
 import zio.ZLayer
 
+import javax.sql.DataSource
+
 object Repository {
-  private def quillLayer =
+  def quillLayer: ZLayer[DataSource, Nothing, Quill.Postgres[SnakeCase.type]] =
     Quill.Postgres.fromNamingStrategy(SnakeCase)
 
   private def dataSourceLayer =
